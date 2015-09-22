@@ -31,7 +31,18 @@ a content management system that doesn't suck
 
 ### data structures
 
-- [universal virtual dom element](https://github.com/gcanti/uvdom)
+elements are represented as a json object based on [virtual-hyperscript](https://github.com/Matt-Esch/virtual-dom/tree/master/virtual-hyperscript), with `id`, `tag`, `properties`, and `children` ([`id`]).
+
+```json
+{
+  "id": 0,
+  "tag": "a",
+  "properties": {
+    "href": "http://github.com/ahdinosaur"
+  }
+  children: [1, 2]
+}
+```
 
 ### actions
 
