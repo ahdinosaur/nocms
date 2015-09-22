@@ -24,7 +24,13 @@
     "url": "https://github.com/ahdinosaur/nocms/issues"
   },
   "homepage": "https://github.com/ahdinosaur/nocms",
-  "dependencies": {},
+  "dependencies": {
+    "barracks": "^6.0.4",
+    "jiff": "^0.7.2",
+    "state-atom": "^2.1.1",
+    "virtual-dom": "^2.1.1",
+    "virtual-raf": "^2.0.3"
+  },
   "devDependencies": {
     "browserify": "^10.0.0",
     "budo": "^4.0.0",
