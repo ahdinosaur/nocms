@@ -99,7 +99,8 @@ function renderEditableElement (state, element) {
         'ev-click': function (ev) {
           // TODO should be barracks action
           // get new content of element
-          var contents = document.getElementById(element.id + '-edit').textContent // HACK
+          var contents = JSON.parse(document.getElementById(element.id + '-edit').value) // HACK
+          console.log("new contents", contents)
           // set new element content
           atom.elements.get(element.id).set(contents)
           // element is no longer in edit
@@ -113,6 +114,7 @@ function renderEditableElement (state, element) {
     element.tag,
     extend(element.properties, {
       'ev-click': function (ev) {
+        if (!ev.ctrlKey) { return }
         ev.preventDefault()
         // TODO should be barracks action
         console.log('clicked', element.id, 'ev', ev)
@@ -142,7 +144,10 @@ function renderAdminContainer (state, children) {
         // TODO should be a barracks action
         atom.isEditable.set(!atom.isEditable())
       }
-    })
+    }),
+    state.isEditable ? h('span', {
+      textContent: "hold Ctrl and click on an element to edit it"
+    }) : null
   ].concat(children))
 }
 
