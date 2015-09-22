@@ -26,10 +26,12 @@
   "homepage": "https://github.com/ahdinosaur/nocms",
   "dependencies": {
     "barracks": "^6.0.4",
+    "dom-delegator": "^13.1.0",
     "jiff": "^0.7.2",
     "state-atom": "^2.1.1",
     "virtual-dom": "^2.1.1",
-    "virtual-raf": "^2.0.3"
+    "virtual-raf": "^2.0.3",
+    "xtend": "^4.0.0"
   },
   "devDependencies": {
     "browserify": "^10.0.0",
