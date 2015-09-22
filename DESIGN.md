@@ -24,7 +24,7 @@ a content management system that doesn't suck
 ### modules
 
 - [virtual-dom](https://www.npmjs.com/package/virtual-dom): virtual dom
-- [raf-loop](https://www.npmjs.com/package/virtual-raf): render loop
+- [virtual-raf](https://www.npmjs.com/package/virtual-raf): render loop
 - [state-atom](https://github.com/yoshuawuyts/state-atom): observable state atom
 - [barracks](https://github.com/yoshuawuyts/barracks): action dispatcher
 - [jiff](https://www.npmjs.com/package/jiff): json diff and patch
