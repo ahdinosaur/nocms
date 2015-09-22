@@ -10,7 +10,7 @@ require('dom-delegator')()
 // setup observable state atom
 var atom = a({
   isEditable: a.value(false),
-  elementsInEdit: a.array([]),
+  elementsInEdit: a.varhash({}),
   elements: a.varhash({
     0: Element({
       id: 0,
@@ -87,23 +87,48 @@ function renderElement (state, element) {
 }
 
 function renderEditableElement (state, element) {
-  var editIndex = state.elementsInEdit.indexOf(element.id)
-  if (editIndex !== -1) {
+  if (state.elementsInEdit[element.id]) {
     return h('div', {}, [
       h('textarea', {
-        id: element.id + '-edit', // HACK
-        textContent: JSON.stringify(element, null, 2)
+        textContent: JSON.stringify(element, null, 2),
+        'ev-input': function (ev) {
+          // TODO should be barracks action
+          console.log("input", ev)
+
+          // if editor doesn't exist
+          /*
+          console.log("editor", atom.elementsInEdit.get(element.id))
+          if (atom.elementsInEdit.get(element.id) == null) {
+            console.log("creating", element.id)
+            // create it
+            atom.elementsInEdit.put(element.id, a.value(element))
+          }
+          */
+
+          try {
+            // get editor content
+            var contents = JSON.parse(ev.target.value)
+          } catch (err) {
+            console.error(err)
+          }
+
+          // set editor content
+          atom.elementsInEdit.get(element.id).set(contents)
+        }
       }),
       h('button', {
         textContent: 'save',
         'ev-click': function (ev) {
           // TODO should be barracks action
-          // get new content of element
-          var contents = document.getElementById(element.id + '-edit').textContent // HACK
-          // set new element content
-          atom.elements.get(element.id).set(contents)
+          console.log("saving", atom.elementsInEdit.get(element.id))
+
+          // set edited contents
+          atom.elements.get(element.id).set(
+            atom.elementsInEdit.get(element.id)()
+          )
+
           // element is no longer in edit
-          atom.elementsInEdit.splice(editIndex, 1)
+          atom.elementsInEdit.delete(element.id)
         }
       })
     ].concat(renderChildren(state, element.children, renderEditableElement)))
@@ -113,10 +138,11 @@ function renderEditableElement (state, element) {
     element.tag,
     extend(element.properties, {
       'ev-click': function (ev) {
+        if (!ev.ctrlKey) { return }
         ev.preventDefault()
         // TODO should be barracks action
-        console.log('clicked', element.id, 'ev', ev)
-        atom.elementsInEdit.push(element.id)
+        console.log('editing', element.id, 'ev', ev)
+        atom.elementsInEdit.put(element.id, a.value(element))
       }
     }),
     renderChildren(state, element.children, renderEditableElement)
@@ -142,7 +168,10 @@ function renderAdminContainer (state, children) {
         // TODO should be a barracks action
         atom.isEditable.set(!atom.isEditable())
       }
-    })
+    }),
+    state.isEditable ? h('span', {
+      textContent: "hold Ctrl and click on an element to edit it"
+    }) : null
   ].concat(children))
 }
 
