@@ -4,13 +4,13 @@ var a = require('state-atom')
 var vraf = require('virtual-raf')
 var extend = require('xtend')
 
-// required for event delegation
-// to be handled correctly
+// required for 'ev-*' event delegation to be handled correctly
 require('dom-delegator')()
 
 // setup observable state atom
 var atom = a({
   isEditable: a.value(false),
+  elementsInEdit: a.array([]),
   elements: a.varhash({
     0: Element({
       id: 0,
@@ -74,45 +74,70 @@ function render (state) {
     renderElement
 
   return renderAdminContainer(state, [
-    renderEl(root, state.elements)
+    renderEl(state, root)
   ])
 }
 
-function renderElement (element, elements) {
+function renderElement (state, element) {
   return h(
     element.tag,
     element.properties,
-    element.children != null ?
-      element.children.map(function (childId) {
-        var child = elements[childId]
-        return renderElement(child, elements)
-      }) :
-      null
+    renderChildren(state, element.children, renderElement)
   )
 }
 
-function renderEditableElement (element, elements) {
+function renderEditableElement (state, element) {
+  var editIndex = state.elementsInEdit.indexOf(element.id)
+  if (editIndex !== -1) {
+    return h('div', {}, [
+      h('textarea', {
+        id: element.id + '-edit', // HACK
+        textContent: JSON.stringify(element, null, 2)
+      }),
+      h('button', {
+        textContent: 'save',
+        'ev-click': function (ev) {
+          // TODO should be barracks action
+          // get new content of element
+          var contents = document.getElementById(element.id + '-edit').textContent // HACK
+          // set new element content
+          atom.elements.get(element.id).set(contents)
+          // element is no longer in edit
+          atom.elementsInEdit.splice(editIndex, 1)
+        }
+      })
+    ].concat(renderChildren(state, element.children, renderEditableElement)))
+  }
+
   return h(
     element.tag,
     extend(element.properties, {
       'ev-click': function (ev) {
         ev.preventDefault()
+        // TODO should be barracks action
         console.log('clicked', element.id, 'ev', ev)
+        atom.elementsInEdit.push(element.id)
       }
     }),
-    element.children != null ?
-      element.children.map(function (childId) {
-        var child = elements[childId]
-        return renderElement(child, elements)
-      }) :
-      null
+    renderChildren(state, element.children, renderEditableElement)
   )
+}
+
+function renderChildren (state, children, renderFn) {
+  if (children == null) {
+    return null
+  }
+
+  return children.map(function (childId) {
+    var child = state.elements[childId]
+    return renderFn(state, child)
+  })
 }
 
 function renderAdminContainer (state, children) {
   return h('div.admin', {}, [
     h('button', {
-      textContent: state.isEditable ? 'save' : 'edit',
+      textContent: state.isEditable ? 'publish' : 'edit',
       'ev-click': function (ev) {
         // TODO should be a barracks action
         atom.isEditable.set(!atom.isEditable())
