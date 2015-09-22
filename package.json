@@ -28,6 +28,7 @@
     "barracks": "^6.0.4",
     "dom-delegator": "^13.1.0",
     "jiff": "^0.7.2",
+    "observ-increment": "^1.0.1",
     "state-atom": "^2.1.1",
     "virtual-dom": "^2.1.1",
     "virtual-raf": "^2.0.3",
