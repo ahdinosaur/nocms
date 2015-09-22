@@ -95,16 +95,6 @@ function renderEditableElement (state, element) {
           // TODO should be barracks action
           console.log("input", ev)
 
-          // if editor doesn't exist
-          /*
-          console.log("editor", atom.elementsInEdit.get(element.id))
-          if (atom.elementsInEdit.get(element.id) == null) {
-            console.log("creating", element.id)
-            // create it
-            atom.elementsInEdit.put(element.id, a.value(element))
-          }
-          */
-
           try {
             // get editor content
             var contents = JSON.parse(ev.target.value)
