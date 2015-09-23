@@ -2,7 +2,7 @@
 
 content management system that doesn't suck
 
-see [DESIGN](./DESIGN) for high-level design.
+see [DESIGN](./DESIGN.md) for high-level design.
 
 ## how
 
