@@ -1,7 +1,5 @@
 # no cms
 
-**mad science design** _expect the unexpected_
-
 a content management system that doesn't suck
 
 ## principles

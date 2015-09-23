@@ -2,6 +2,8 @@
 
 content management system that doesn't suck
 
+**experimental mad science** _expect the unexpected_
+
 see [DESIGN](./DESIGN.md) for high-level design.
 
 ## how
