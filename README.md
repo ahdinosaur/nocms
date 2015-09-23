@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/ahdinosaur/nocms.png?label=ready&title=Ready)](https://waffle.io/ahdinosaur/nocms)
 # nocms
 
 content management system that doesn't suck
