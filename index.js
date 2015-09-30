@@ -1,9 +1,9 @@
-var state = require('./lib/state')
+var model = require('./lib/model')
+var view = require('./lib/view')
 var loop = require('./lib/loop')
-var render = require('./lib/render')
 
-var atom = state()
-var dom = loop(atom, render)
+var atom = model()
+var dom = loop(atom, view)
 
-// render dom to body
-document.body.appendChild(dom.render())
+// view dom to body
+document.body.appendChild(dom.view())
